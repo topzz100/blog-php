@@ -38,9 +38,22 @@ switch ($request) {
     case '/about':
         require __DIR__ . '/controllers/about.php';
         break;
-    case '/posts':
-        require __DIR__ . '/controllers/posts.php';
+    case '/contact':
+        require __DIR__ . '/controllers/contact.php';
         break;
+    case '/write':
+        require __DIR__ . '/controllers/write.php';
+        break;
+    case '/settings':
+        require __DIR__ . '/controllers/settings.php';
+        break;
+    case '/register':
+        require __DIR__ . '/controllers/register.php';
+        break;
+    case '/login':
+        require __DIR__ . '/controllers/login.php';
+        break;
+
     default:
         // For any other URL, check if it matches a pattern
         if (preg_match('/^\/posts\/(\d+)$/', $request, $matches)) {
