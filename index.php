@@ -18,52 +18,57 @@ require 'functions.php';
 
 
 
-
 // Base path and URL
 define('BASE_PATH', __DIR__);
 define('BASE_URL', 'http://localhost/php/projects/blog-php');
 
 // Get the requested URL
-$request = $_SERVER['REQUEST_URI'];
+//require "router.php";
 
-// Remove base path from request
-$request = str_replace('/php/projects/blog-php', '', $request);
+// class Person
+// {
+//     public $name;
+// }
 
-// Route the request
-switch ($request) {
-    case '':
-    case '/':
-        require __DIR__ . '/controllers/index.php';
-        break;
-    case '/about':
-        require __DIR__ . '/controllers/about.php';
-        break;
-    case '/contact':
-        require __DIR__ . '/controllers/contact.php';
-        break;
-    case '/write':
-        require __DIR__ . '/controllers/write.php';
-        break;
-    case '/settings':
-        require __DIR__ . '/controllers/settings.php';
-        break;
-    case '/register':
-        require __DIR__ . '/controllers/register.php';
-        break;
-    case '/login':
-        require __DIR__ . '/controllers/login.php';
-        break;
+// $person = new Person();
+// $person->name = "John";
 
-    default:
-        // For any other URL, check if it matches a pattern
-        if (preg_match('/^\/posts\/(\d+)$/', $request, $matches)) {
-            $_GET['id'] = $matches[1]; // Set the ID as a GET parameter
-            require __DIR__ . '/controllers/post-single.php';
-            break;
-        }
+//dd($person);
 
-        // Handle 404
-        http_response_code(404);
-        require __DIR__ . '/views/404.view.php';
-        break;
+class Database
+{
+
+    public $connection;
+    public function __construct()
+    {
+        //dd("hi there");
+        $dsn = "mysql:host=localhost;port=3306;dbname=blog_php;charset=utf8mb4";
+
+        $this->connection = new PDO($dsn, 'root');
+    }
+    public function query($query)
+    {
+        $statement = $this->connection->prepare($query);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+$db = new Database();
+$posts = $db->query("select * from posts");
+
+
+// $dsn = "mysql:host=localhost;port=3306;dbname=blog_php;charset=utf8mb4";
+
+// $pdo = new PDO($dsn, 'root');
+// $statement = $pdo->prepare("select * from posts");
+// $statement->execute();
+
+// $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+//dd($posts);
+
+foreach ($posts as $post) {
+    echo "<li>" . $post['title'] . "</li>";
 }
