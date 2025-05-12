@@ -1,9 +1,15 @@
 <?php
+// Base path and URL
+define('BASE_PATH', __DIR__);
+define('BASE_URL', 'http://localhost/php/projects/blog-php');
 
 //echo "Hello there";
 require 'functions.php';
-require "router.php";
+// require "router.php";
 require 'Database.php';
+
+// Get the requested URL
+//require "router.php";
 
 
 // $uri = $_SERVER['REQUEST_URI'];
@@ -20,12 +26,6 @@ require 'Database.php';
 
 
 
-// Base path and URL
-define('BASE_PATH', __DIR__);
-define('BASE_URL', 'http://localhost/php/projects/blog-php');
-
-// Get the requested URL
-
 
 // class Person
 // {
@@ -36,11 +36,13 @@ define('BASE_URL', 'http://localhost/php/projects/blog-php');
 // $person->name = "John";
 
 //dd($person);
+$id = $_GET['id'];
 
 $config = require('config.php');
 
 $db = new Database($config['database']);
-$posts = $db->query("select * from posts")->fetchAll();
+$query = "select * from posts where id = ?";
+$posts = $db->query($query, [$id])->fetchAll();
 
 
 // $dsn = "mysql:host=localhost;port=3306;dbname=blog_php;charset=utf8mb4";
@@ -51,8 +53,10 @@ $posts = $db->query("select * from posts")->fetchAll();
 
 // $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-//dd($posts);
+dd($posts);
 
 // foreach ($posts as $post) {
 //     echo "<li>" . $post['title'] . "</li>";
 // }
+
+//dd($_GET['id']);
