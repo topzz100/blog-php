@@ -2,6 +2,8 @@
 
 //echo "Hello there";
 require 'functions.php';
+require "router.php";
+require 'Database.php';
 
 
 // $uri = $_SERVER['REQUEST_URI'];
@@ -23,7 +25,7 @@ define('BASE_PATH', __DIR__);
 define('BASE_URL', 'http://localhost/php/projects/blog-php');
 
 // Get the requested URL
-//require "router.php";
+
 
 // class Person
 // {
@@ -35,28 +37,10 @@ define('BASE_URL', 'http://localhost/php/projects/blog-php');
 
 //dd($person);
 
-class Database
-{
+$config = require('config.php');
 
-    public $connection;
-    public function __construct()
-    {
-        //dd("hi there");
-        $dsn = "mysql:host=localhost;port=3306;dbname=blog_php;charset=utf8mb4";
-
-        $this->connection = new PDO($dsn, 'root');
-    }
-    public function query($query)
-    {
-        $statement = $this->connection->prepare($query);
-        $statement->execute();
-
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-}
-
-$db = new Database();
-$posts = $db->query("select * from posts");
+$db = new Database($config['database']);
+$posts = $db->query("select * from posts")->fetchAll();
 
 
 // $dsn = "mysql:host=localhost;port=3306;dbname=blog_php;charset=utf8mb4";
@@ -69,6 +53,6 @@ $posts = $db->query("select * from posts");
 
 //dd($posts);
 
-foreach ($posts as $post) {
-    echo "<li>" . $post['title'] . "</li>";
-}
+// foreach ($posts as $post) {
+//     echo "<li>" . $post['title'] . "</li>";
+// }
